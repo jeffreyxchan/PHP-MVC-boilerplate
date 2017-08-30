@@ -1,17 +1,9 @@
 <?php
-class Controller {
-    public $load;
-    public $model;
 
-    function __construct()
+class MainController
+{
+    public function index()
     {
-        $this->load = new Load();
-        $this->model = new Model();
-        $this->home();
-    }
-
-    function home()
-    {
-      $this->load->view('index.html');
+        require VIEWS . 'index.php';
     }
 }
