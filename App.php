@@ -9,11 +9,19 @@ class App
     public function __construct()
     {
         $this->splitUrl();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = array(
+                'jeffrey' => '1',
+                'wanda' => '2',
+                'jordan' => '3'
+            );
+            echo json_encode($data);
+        }
 
-        if (!$this->url_controller) {
-            require CONTROLLERS . 'MainController.php';
+        else if (!$this->url_controller) {
+            require_once CONTROLLERS . 'MainController.php';
             $mainController = new MainController;
-            $mainController->index();
+            $mainController->render('index');
         }
     }
 
