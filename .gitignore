@@ -1,0 +1,6 @@
+*.shtml
+default.html
+.DS_Store
+_site/
+favicon.ico
+500.php
