@@ -9,30 +9,34 @@ class App
     public function __construct()
     {
         $this->splitUrl();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = array(
-                'jeffrey' => '1',
-                'wanda' => '2',
-                'jordan' => '3'
-            );
-            echo json_encode($data);
-        }
 
-        else if (!$this->url_controller) {
+        if (!$this->url_controller) {
             require_once CONTROLLERS . 'MainController.php';
             $mainController = new MainController;
             $mainController->render('index');
+        } else if (file_exists(APP . 'controllers/' . ucfirst($this->url_controller) . 'Controller.php')) {
+            require_once CONTROLLERS . ucfirst($this->url_controller) . 'Controller.php';
+            $controllerName = ucfirst($this->url_controller) . 'Controller';
+            $controller = new $controllerName();
+            $controller->render($this-> url_action);
+        } else {
+            require_once CONTROLLERS . 'ErrorController.php';
+            $errorController = new ErrorController;
+            $errorController->render('index');
         }
     }
 
     private function splitUrl()
     {
-        if (isset($_GET['url'])) {
-            $url = trim($_GET['url'], '/');
-            $url = filter_var($url, FILTER_SANITIZE_URL);
-            $url = explode('/', $url);
+        $url = trim($_SERVER['REQUEST_URI'], '/');
+        $url = filter_var($url, FILTER_SANITIZE_URL);
+        $url = explode('/', $url);
 
-            $this->url_controller = isset($url[0]) ? $url[0] : null;
-        }
+        $this->url_controller = isset($url[0]) ? $url[0] : null;
+        $this->url_action = isset($url[1]) ? $url[1] : null;
+
+        unset($url[0], $url[1]);
+
+        $this->url_params = array_values($url);
     }
 }
