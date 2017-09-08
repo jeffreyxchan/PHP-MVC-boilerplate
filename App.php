@@ -31,8 +31,9 @@ class App
         $url = trim($_SERVER['REQUEST_URI'], '/');
         $url = filter_var($url, FILTER_SANITIZE_URL);
         $url = explode('/', $url);
+        $validControllers = array('songs');
 
-        $this->url_controller = isset($url[0]) ? $url[0] : null;
+        $this->url_controller = isset($url[0]) && in_array($url[0], $validControllers) ? $url[0] : null;
         $this->url_action = isset($url[1]) ? $url[1] : null;
 
         unset($url[0], $url[1]);
