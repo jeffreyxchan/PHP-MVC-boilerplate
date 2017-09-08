@@ -2,7 +2,8 @@
 
 class Model
 {
-    private $db = null;
+    public $db = null;
+    public $tableName = '';
 
     public function __construct($db)
     {
@@ -15,7 +16,7 @@ class Model
 
     public function find()
     {
-        $sql = 'SELECT * FROM songs;';
+        $sql = 'SELECT * FROM ' . $this->tableName . ';';
         $query = $this->db->prepare($sql);
         $query->execute();
 
