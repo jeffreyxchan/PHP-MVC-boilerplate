@@ -1,24 +1,8 @@
 <?php
 
-class Song
+require_once CORE . 'Model.php';
+
+class Song extends Model
 {
-    private $db = null;
-
-    public function __construct($db)
-    {
-        try {
-            $this->db = $db;
-        } catch (PDOException $e) {
-            exit('Database connection could not be established.');
-        }
-    }
-
-    public function find()
-    {
-        $sql = 'SELECT * FROM songs;';
-        $query = $this->db->prepare($sql);
-        $query->execute();
-
-        return $query->fetchAll();
-    }
+    // placeholder
 }
