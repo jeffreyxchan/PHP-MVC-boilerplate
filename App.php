@@ -1,15 +1,28 @@
 <?php
 
+/**
+ * class App
+ * When created, it attempts to split the request URI into multiple pieces.
+ * After doing so, it delegates the rest of the requst to a controller.
+ */
 class App
 {
     private $url_controller = null;
     private $url_action = null;
     private $url_params = array();
 
+    // REGISTER CONTROLLERS HERE
+    private $validControllers = array('status', 'deploy');
+
+    /**
+     * App constructor splits the request URI into multiple pieces and finds a controller
+     * to delegate the rest of the work to
+     */
     public function __construct()
     {
-        $this->splitUrl();
+        $this->splitUrl(); // Splits the URI
 
+        // Finds appropriate controller
         if (!$this->url_controller) {
             require_once CONTROLLERS . 'MainController.php';
             $mainController = new MainController;
@@ -31,7 +44,7 @@ class App
         $url = trim($_SERVER['REQUEST_URI'], '/');
         $url = filter_var($url, FILTER_SANITIZE_URL);
         $url = explode('/', $url);
-        $validControllers = array('songs');
+        $validControllers = $this->validControllers;
 
         if (isset($url[0]) && in_array($url[0], $validControllers)) {
             $this->url_controller = $url[0];
